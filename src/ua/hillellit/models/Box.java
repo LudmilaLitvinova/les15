@@ -6,40 +6,40 @@ import ua.hillellit.models.fruits.Fruit;
 
 public class Box<T extends Fruit> {
 
-  ArrayList<T> arrayList = new ArrayList<>();
-  T fruit;
+  List<T> list = new ArrayList<>();
+  float boxWeight;
 
   public void addFruit(T fruit) {
     if (fruit != null) {
-      this.fruit = fruit;
-      arrayList.add(fruit);
+      list.add(fruit);
+      boxWeight += fruit.weight;
     }
   }
 
   public void addFruits(List<T> fruits) {
     if (fruits != null) {
-      this.fruit = fruits.get(0);
-      arrayList.addAll(fruits);
+      list.addAll(fruits);
+      boxWeight += fruits.get(0).weight*fruits.size();
     }
   }
 
-  public float getWeight() {
-    if (arrayList != null && fruit != null) {
-      return arrayList.size() * fruit.weight;
-    }
-    return 0;
+  public float getBoxWeight() {
+    return boxWeight;
   }
 
   public boolean compare(Box box) {
     if (box != null) {
-      return this.getWeight() == box.getWeight();
+      return this.getBoxWeight() == box.getBoxWeight();
     }
     return false;
   }
 
   public void merge(Box<T> box) {
     if (box != null) {
-      this.arrayList.addAll(box.arrayList);
+      this.list.addAll(box.list);
+      boxWeight += box.getBoxWeight();
+      box.list.removeAll(list);
+      box.boxWeight=0f;
     }
   }
 }
